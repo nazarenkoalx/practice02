@@ -4,6 +4,7 @@
 const express = require("express");
 const drinksRouter = express.Router();
 const drinksController = require("../controllers/DrinksController");
+const rolesMiddleware = require("../middlewares/rolesMiddleware");
 
 // add drink
 drinksRouter.post(
@@ -15,7 +16,13 @@ drinksRouter.post(
   drinksController.addDrink
 );
 // getAllDrinks
-drinksRouter.get("/drinks", drinksController.getAllDrinks);
+drinksRouter.get(
+  "/drinks",
+  rolesMiddleware(["ADMIN", "MODERATOR"]),
+  drinksController.getAllDrinks
+);
+
+// ["USER", "ADMIN", "CEO", "MODERATOR"]
 
 // getOneDrink
 drinksRouter.get("/drinks/:id", drinksController.getOneDrink);
