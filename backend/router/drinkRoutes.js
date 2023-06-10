@@ -5,12 +5,13 @@ const express = require("express");
 const drinksRouter = express.Router();
 const drinksController = require("../controllers/DrinksController");
 const rolesMiddleware = require("../middlewares/rolesMiddleware");
+const authMiddelware = require("../middlewares/authMiddelware");
 
 // add drink
 drinksRouter.post(
   "/drinks",
+  authMiddelware,
   (req, res, next) => {
-    console.log("joi worked");
     next();
   },
   drinksController.addDrink
@@ -18,7 +19,8 @@ drinksRouter.post(
 // getAllDrinks
 drinksRouter.get(
   "/drinks",
-  rolesMiddleware(["ADMIN", "MODERATOR"]),
+  authMiddelware,
+  rolesMiddleware(["USER", "ADMIN", "MODERATOR"]),
   drinksController.getAllDrinks
 );
 

@@ -1,8 +1,8 @@
 const drinkModel = require("../models/drinkModel");
 
 class DrinksService {
-  async showAll() {
-    const drinks = await drinkModel.find();
+  async showAll(id) {
+    const drinks = await drinkModel.find({ owner: id });
     if (!drinks) {
       return null;
     }

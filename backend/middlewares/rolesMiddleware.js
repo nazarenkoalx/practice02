@@ -13,11 +13,14 @@ module.exports = (rolesArray) => {
         //2. розшфровуєм і верифікуєм токен
         const decoded = jwt.verify(token, "pizza");
         const userRoles = decoded.roles;
-        let hasRole = false;
-        userRoles.forEach((role) => {
-          if (rolesArray.includes(role)) {
-            hasRole = true;
-          }
+        // let hasRole = false;
+        // userRoles.forEach((role) => {
+        //   if (rolesArray.includes(role)) {
+        //     hasRole = true;
+        //   }
+        // });
+        const hasRole = userRoles.some((role) => {
+          return rolesArray.includes(role);
         });
         if (!hasRole) {
           res.status(403);

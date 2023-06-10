@@ -17,6 +17,11 @@ const drinkSchema = Schema({
     type: Boolean,
     required: [true, "adult field is required"],
   },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+    required: true,
+  },
 });
 
 module.exports = model("drinks", drinkSchema);
