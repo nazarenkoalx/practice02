@@ -12,13 +12,48 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("./middlewares/authMiddelware");
 const RolesModel = require("./models/rolesModel");
+const { engine } = require("express-handlebars");
+const sendEmail = require("./services/sendEmail");
 
 dotenv.config({ path: cofigPath });
 
 const app = express();
 
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// set template engine
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "backend/views");
+
+app.get("/", (req, res) => {
+  res.render("home");
+});
+
+app.get("/about", (req, res) => {
+  res.render("about");
+});
+
+app.get("/contact", (req, res) => {
+  res.render("contact");
+});
+
+app.post("/send", async (req, res) => {
+  // res.send(req.body);
+
+  try {
+    res.render("send", {
+      msg: "Contacts send success",
+      name: req.body.userName,
+      email: req.body.userEmail,
+    });
+    await sendEmail(req.body);
+  } catch (error) {
+    res.status(400).json({ code: 400, message: error.message });
+  }
+});
 
 app.use("/api/v1", require("./router/drinkRoutes"));
 

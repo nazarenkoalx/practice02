@@ -20,7 +20,7 @@ drinksRouter.post(
 drinksRouter.get(
   "/drinks",
   authMiddelware,
-  rolesMiddleware(["USER", "ADMIN", "MODERATOR"]),
+  rolesMiddleware(["ADMIN", "MODERATOR"]),
   drinksController.getAllDrinks
 );
 
